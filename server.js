@@ -1,4 +1,5 @@
 import express from 'express'
+import { obtener_token } from './utils.js'
 
 
 const app = express()
@@ -9,19 +10,21 @@ app.listen(port, () => {
     console.log('Se esta ejecutando el localhost:' + port)
 })
 
-app.post('/obtener_token', (req, res) => {
-    console.log(req.body)
+app.post('/obtener_token', async(req, res) => {
+
     if (!req.body.nombre) {
         res.status(400).send('Error no se encuentra el nombre de usuario')
         return
     }
 
-    if (!req.body.contraseña){
+    if (!req.body.contraseña) {
         res.status(400).send('Error no escribio su contraseña no puede iniciar la sesión')
         return
     }
-
-    res.send("Lo lograsteeee uvu")
+    const resultado = await obtener_token(req.body.nombre, req.body.contraseña)
+    console.log(resultado)
+    res.send(resultado)
+    
     return
 
 })
