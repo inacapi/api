@@ -1,10 +1,11 @@
 import puppeteer from 'puppeteer'
 
-export const obtener_token = async (nombre, contraseña) => {
+export const obtener_token = async (nombre, contraseña, headless = true) => {
     // Crear el navegador 
     const browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
-        headless: false,
+        headless: headless,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const page = await browser.newPage()
 
@@ -15,7 +16,7 @@ export const obtener_token = async (nombre, contraseña) => {
 
     //Obtener Token
     try {
-        await page.waitForResponse('https://siga.inacap.cl/sts/', { timeout: 5000 })
+        await page.waitForResponse('https://siga.inacap.cl/sts/', { timeout: 3000 })
         const cookies = await page.cookies()
         for (let cookie of cookies) {
             if (cookie.name === 'HTPSESIONIC') {
