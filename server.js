@@ -12,33 +12,41 @@ app.listen(port, () => {
 })
 
 app.post('/obtener_token', async (req, res) => {
-    if (!req.body.nombre)
-        return res.status(400).json({ error: 'No se encuentra el nombre' })
+    console.log('\n/obtener_token:')
 
-    if (!req.body.contraseña)
-        return res.status(400).json({ error: 'No se encuentra la contraseña' })
+    let error = ''
+    if (!req.body.nombre) error = 'No se encuentra el nombre'
+    if (!req.body.contraseña) error = 'No se encuentra la contraseña'
 
+    if (error) {
+        console.log(error)
+        return res.status(400).json({ error })
+    }
+
+    console.log('Enviando solicitud a Inacap...')
     const resultado = await obtener_token(req.body.nombre, req.body.contraseña)
 
-    if (resultado.error)
-        res.status(400)
+    if (resultado.error) res.status(400)
 
+    console.dir(resultado, { depth: null })
     res.json(resultado)
 })
 
 app.post('/seccion', async (req, res) => {
-    if (!req.headers.authorization)
-        return res.status(400).json({ error: 'No se encuentra el token' })
+    console.log('\n/seccion:')
 
-    if (!req.body.matricula)
-        return res.status(400).json({ error: 'No se encuentra la matricula' })
+    let error = ''
+    if (!req.headers.authorization) error = 'No se encuentra el token.'
+    if (!req.body.matricula) error = 'No se encuentra la matricula.'
+    if (!req.body.periodo) error = 'No se encuentra el periodo.'
+    if (!req.body.seccion) error = 'No se encuentra la seccion.'
 
-    if (!req.body.periodo)
-        return res.status(400).json({ error: 'No se encuentra el periodo' })
+    if (error) {
+        console.log(error)
+        return res.status(400).json({ error })
+    }
 
-    if (!req.body.seccion)
-        return res.status(400).json({ error: 'No se encuentra la seccion' })
-
+    console.log('Enviando solicitud a Inacap...')
     const respuesta = await seccion(req.headers.authorization, req.body.matricula, req.body.seccion, req.body.periodo)
 
     if (respuesta.error) {
@@ -46,5 +54,6 @@ app.post('/seccion', async (req, res) => {
         delete respuesta.status
     }
 
+    console.dir(respuesta, { depth: null })
     res.json(respuesta)
 })
