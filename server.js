@@ -13,6 +13,8 @@ app.listen(port, () => {
 })
 
 app.post('/obtener_token', async (req, res) => {
+    console.log('¿Hola?')
+
     if (!req.body.nombre)
         return res.status(400).send('Error no se encuentra el nombre de usuario')
 
