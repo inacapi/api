@@ -44,3 +44,30 @@ export const obtener_token = async (nombre, contraseña) => {
 
     return { error: 'No se pudo obtener el token', token: '' }
 }
+
+export const seccion = async (token, matricula, seccion, periodo) => {
+    const url = 'https://siga.inacap.cl/Inacap.Siga.ResumenAcademico/api/seccion'
+    const respuesta = await fetch(null, url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': `HTPSESIONIC=${token}`
+        },
+        body: JSON.stringify({
+            matrNcorr: matricula,
+            seccCcod: seccion,
+            periCcod: periodo,
+            ssecNcorr: '0',
+            carrCcod: '0',
+        })
+    })
+
+    if (!respuesta.ok) {
+        if (respuesta.status === 401) {
+            return { error: 'El token venció', data: {}, status: 401 }
+        }
+        return { error: 'Error desconocido', data: {}, status: respuesta.status }
+    }
+
+    return { error: '', data: await respuesta.json() }
+}
