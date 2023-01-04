@@ -1,10 +1,12 @@
 FROM node:16-alpine
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm clean-install --omit=dev && npm cache clean --force
 
 COPY . .
 
