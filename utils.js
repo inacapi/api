@@ -16,15 +16,13 @@ export const obtener_token = async (nombre, contraseña) => {
     })
 
     const data = await respuesta.text()
-    if (data && !data.includes('Working...')) {
-        return { error: 'Usuario o contraseña incorrectos', token: '' }
-    }
+    if (data && !data.includes('Working...'))
+        return { error: 'Usuario o contraseña incorrectos' }
 
     const document = parse(data)
     const wresult = document.querySelector('input[name="wresult"]')
-    if (!wresult) {
-        return { error: 'No se pudo obtener el token', token: '' }
-    }
+    if (!wresult)
+        return { error: 'No se pudo obtener el token' }
 
     await fetch(cookieJar, sts, {
         method: 'POST',
@@ -38,11 +36,11 @@ export const obtener_token = async (nombre, contraseña) => {
 
     for (const cookie of cookieJar.cookiesAll()) {
         if (cookie.name === 'HTPSESIONIC') {
-            return { error: '', token: cookie.value }
+            return { token: cookie.value }
         }
     }
 
-    return { error: 'No se pudo obtener el token', token: '' }
+    return { error: 'No se pudo obtener el token' }
 }
 
 export const seccion = async (token, matricula, seccion, periodo) => {

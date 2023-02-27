@@ -25,7 +25,6 @@ app.post('/obtener_token', async (req, res) => {
 
     if (resultado.error) res.status(400)
 
-    console.dir(resultado, { depth: null })
     res.json(resultado)
 })
 
