@@ -1,6 +1,12 @@
 # api
 Api para facilitar el acceso a la api de inacap.
 
+## Nota importante
+En la nueva versión 2.0, las peticiones han sido alteradas, por lo que podrían
+funcionar diferente algunas cosas. Los nuevos cambios principalmente incluyen
+la opción de obtener los datos en paralelo, para que sean más rápidos. Para usar
+esta función en `/seccion` hay que enviar una lista con matrículas o secciones.
+
 ## Uso
 La forma más sencilla de usar la aplicación es descargar la imagen desde docker,
 está guardada en github. Por ejemplo, el siguiente comando inicia el servidor en
@@ -8,7 +14,7 @@ el puerto 3000 con redirección de puertos, y apenas se cierre el contenedor se 
 a eliminar:
 
 ```
-docker run --rm --publish=3000:3000 ghcr.io/inacapi/api:1.0
+docker run --rm --publish=3000:3000 ghcr.io/inacapi/api:2.0
 ```
 
 ## Descripción
