@@ -18,10 +18,7 @@ app.post('/obtener_token', async (req, res) => {
     if (!req.body.nombre) error = 'No se encuentra el nombre'
     if (!req.body.contraseña) error = 'No se encuentra la contraseña'
 
-    if (error) {
-        console.log(error)
-        return res.status(400).json({ error })
-    }
+    if (error) return res.status(400).json({ error })
 
     console.log('Enviando solicitud a Inacap...')
     const resultado = await obtener_token(req.body.nombre, req.body.contraseña)
@@ -41,18 +38,10 @@ app.post('/seccion', async (req, res) => {
     if (!req.body.periodo) error = 'No se encuentra el periodo.'
     if (!req.body.seccion) error = 'No se encuentra la seccion.'
 
-    if (error) {
-        console.log(error)
-        return res.status(400).json({ error })
-    }
+    if (error) return res.status(400).json({ error })
 
     console.log('Enviando solicitud a Inacap...')
     const respuesta = await seccion(req.headers.authorization, req.body.matricula, req.body.seccion, req.body.periodo)
-
-    if (respuesta.error) {
-        res.status(respuesta.status)
-        delete respuesta.status
-    }
 
     console.dir(respuesta, { depth: null })
     res.json(respuesta)
